@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # Backend API (FastAPI + FinBERT)
+  # ============================================
+  backend:
+    build:
+      context: ./sentitrade-backend
+      dockerfile: Dockerfile
+    container_name: sentitrade-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./sentitrade.db
+      - FINBERT_MODEL=ProsusAI/finbert
+      - FINBERT_CACHE_DIR=/app/models
+      - FRONTEND_URL=http://localhost:5173
+      - DEBUG=true
+    volumes:
+      # Persist FinBERT model cache between restarts
+      - finbert_models:/app/models
+      # Persist SQLite database
+      - backend_data:/app
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # ============================================
+  # Frontend (React + Vite)
+  # ============================================
+  frontend:
+    build:
+      context: ./sentitrade-frontend
+      dockerfile: Dockerfile
+    container_name: sentitrade-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000/ws
+    restart: unless-stopped
+
+volumes:
+  finbert_models:
+    name: sentitrade_finbert_models
+  backend_data:
+    name: sentitrade_backend_data
+
+# ============================================
+# USAGE:
+# ============================================
+# Build and start all services:
+#   docker-compose up --build
+#
+# Start in detached mode:
+#   docker-compose up -d
+#
+# View logs:
+#   docker-compose logs -f
+#
+# Stop all services:
+#   docker-compose down
+#
+# Remove volumes (full reset):
+#   docker-compose down -v
+# ============================================

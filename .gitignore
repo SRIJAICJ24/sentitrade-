@@ -1,0 +1,19 @@
+# Heavy Directories (MUST IGNORE)
+**/node_modules/
+**/venv/
+**/env/
+**/__pycache__/
+**/dist/
+**/build/
+sentitrade-backend/models/
+sentitrade-backend/sentitrade.db
+
+# System
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment
+.env
+*.pyc

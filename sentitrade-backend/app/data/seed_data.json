@@ -1,0 +1,772 @@
+[
+    {
+        "id": 1,
+        "asset": "BTC",
+        "headline": "Bitcoin surges past $50,000 as institutional demand grows",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 2,
+        "asset": "BTC",
+        "headline": "Bloomberg: Bitcoin ETF inflows reach record $1.2B in single day",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 3,
+        "asset": "BTC",
+        "headline": "Official Report: SEC approves new Bitcoin custody framework",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 4,
+        "asset": "BTC",
+        "headline": "MicroStrategy announces additional $500M Bitcoin purchase",
+        "source": "CoinDesk",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 5,
+        "asset": "BTC",
+        "headline": "Whale alert: 10,000 BTC moved to cold storage",
+        "source": "Whale Alert",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 6,
+        "asset": "BTC",
+        "headline": "Bitcoin mining difficulty reaches all-time high",
+        "source": "CryptoNews",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 7,
+        "asset": "BTC",
+        "headline": "Major bank launches Bitcoin trading desk for institutional clients",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 8,
+        "asset": "BTC",
+        "headline": "Bitcoin network hash rate hits new record",
+        "source": "Blockchain.com",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 9,
+        "asset": "BTC",
+        "headline": "El Salvador president announces Bitcoin city expansion",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 10,
+        "asset": "BTC",
+        "headline": "Bitcoin fear and greed index shows extreme greed",
+        "source": "Alternative.me",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 11,
+        "asset": "BTC",
+        "headline": "URGENT: 100x leverage trade opportunity - Join Telegram now!",
+        "source": "Telegram",
+        "sentiment_hint": "spam"
+    },
+    {
+        "id": 12,
+        "asset": "BTC",
+        "headline": "FREE BTC GIVEAWAY - Send 0.1 receive 1.0 back!",
+        "source": "Twitter",
+        "sentiment_hint": "spam"
+    },
+    {
+        "id": 13,
+        "asset": "BTC",
+        "headline": "Bitcoin crashes 10% amid regulatory concerns",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 14,
+        "asset": "BTC",
+        "headline": "China reiterates crypto trading ban, exchanges flee",
+        "source": "Bloomberg",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 15,
+        "asset": "BTC",
+        "headline": "Major exchange suffers $100M hack, withdrawals paused",
+        "source": "CoinDesk",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 16,
+        "asset": "BTC",
+        "headline": "Bitcoin whale dumps 5,000 BTC on Binance",
+        "source": "Whale Alert",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 17,
+        "asset": "BTC",
+        "headline": "Crypto winter fears return as BTC tests support",
+        "source": "CryptoNews",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 18,
+        "asset": "BTC",
+        "headline": "Bitcoin consolidates near $45,000 resistance level",
+        "source": "TradingView",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 19,
+        "asset": "BTC",
+        "headline": "Lightning Network capacity reaches 5,000 BTC milestone",
+        "source": "Bitcoin Magazine",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 20,
+        "asset": "BTC",
+        "headline": "PayPal expands Bitcoin payment options to merchants",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 21,
+        "asset": "AAPL",
+        "headline": "Apple reports record Q4 earnings, beats expectations by 15%",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 22,
+        "asset": "AAPL",
+        "headline": "Bloomberg: Apple Vision Pro sales exceed analyst forecasts",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 23,
+        "asset": "AAPL",
+        "headline": "Official Report: Apple included in Dow Jones Industrial Average",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 24,
+        "asset": "AAPL",
+        "headline": "Apple announces $100B stock buyback program",
+        "source": "CNBC",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 25,
+        "asset": "AAPL",
+        "headline": "iPhone 16 pre-orders break all previous records",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 26,
+        "asset": "AAPL",
+        "headline": "Apple Car project reportedly delayed to 2028",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 27,
+        "asset": "AAPL",
+        "headline": "Berkshire Hathaway increases Apple stake by $2B",
+        "source": "CNBC",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 28,
+        "asset": "AAPL",
+        "headline": "Apple faces antitrust lawsuit in EU over App Store policies",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 29,
+        "asset": "AAPL",
+        "headline": "Apple services revenue grows 20% year-over-year",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 30,
+        "asset": "AAPL",
+        "headline": "Analysts upgrade Apple to Strong Buy with $250 target",
+        "source": "Goldman Sachs",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 31,
+        "asset": "AAPL",
+        "headline": "Apple supplier warns of chip shortage impact",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 32,
+        "asset": "AAPL",
+        "headline": "Apple AI features drive strong Mac sales growth",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 33,
+        "asset": "AAPL",
+        "headline": "Apple stock trades sideways ahead of earnings",
+        "source": "MarketWatch",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 34,
+        "asset": "AAPL",
+        "headline": "China iPhone sales decline 8% amid competition",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 35,
+        "asset": "AAPL",
+        "headline": "Apple announces dividend increase of 5%",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 36,
+        "asset": "AAPL",
+        "headline": "AAPL mooning soon! Join our Telegram for signals!",
+        "source": "Telegram",
+        "sentiment_hint": "spam"
+    },
+    {
+        "id": 37,
+        "asset": "AAPL",
+        "headline": "Apple expands manufacturing in India and Vietnam",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 38,
+        "asset": "AAPL",
+        "headline": "Apple Watch saves another life with heart monitoring feature",
+        "source": "CNN",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 39,
+        "asset": "AAPL",
+        "headline": "Insider selling at Apple raises concerns",
+        "source": "MarketWatch",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 40,
+        "asset": "AAPL",
+        "headline": "Apple partners with OpenAI for advanced Siri features",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 41,
+        "asset": "GOLD",
+        "headline": "Gold hits all-time high as inflation fears persist",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 42,
+        "asset": "GOLD",
+        "headline": "Bloomberg: Central banks continue gold buying spree",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 43,
+        "asset": "GOLD",
+        "headline": "Official Report: Fed signals potential rate cuts boost gold",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 44,
+        "asset": "GOLD",
+        "headline": "Gold demand from India and China reaches decade high",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 45,
+        "asset": "GOLD",
+        "headline": "Safe haven flows push gold above $2,500",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 46,
+        "asset": "GOLD",
+        "headline": "Gold retreats as dollar strengthens",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 47,
+        "asset": "GOLD",
+        "headline": "ETF gold holdings reach multi-year low",
+        "source": "Bloomberg",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 48,
+        "asset": "GOLD",
+        "headline": "Mining companies report record production costs",
+        "source": "Reuters",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 49,
+        "asset": "GOLD",
+        "headline": "Geopolitical tensions drive gold to resistance level",
+        "source": "CNBC",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 50,
+        "asset": "GOLD",
+        "headline": "Gold bulls target $3,000 amid economic uncertainty",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 51,
+        "asset": "GOLD",
+        "headline": "Russia and China increase gold reserves significantly",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 52,
+        "asset": "GOLD",
+        "headline": "Gold jewelry demand softens in Western markets",
+        "source": "World Gold Council",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 53,
+        "asset": "GOLD",
+        "headline": "Analysts see gold as hedge against stagflation",
+        "source": "Goldman Sachs",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 54,
+        "asset": "GOLD",
+        "headline": "Gold consolidates near $2,400 support level",
+        "source": "TradingView",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 55,
+        "asset": "GOLD",
+        "headline": "GUARANTEED 100x returns on Gold futures! DM now!",
+        "source": "Telegram",
+        "sentiment_hint": "spam"
+    },
+    {
+        "id": 56,
+        "asset": "GOLD",
+        "headline": "Gold mining stocks outperform physical gold",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 57,
+        "asset": "GOLD",
+        "headline": "Inflation data boosts gold safe haven appeal",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 58,
+        "asset": "GOLD",
+        "headline": "Gold faces headwinds from rising real yields",
+        "source": "CNBC",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 59,
+        "asset": "GOLD",
+        "headline": "Physical gold demand surges in Middle East",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 60,
+        "asset": "GOLD",
+        "headline": "Gold options show bullish positioning ahead of FOMC",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 61,
+        "asset": "BTC",
+        "headline": "BlackRock Bitcoin ETF becomes largest in the world",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 62,
+        "asset": "BTC",
+        "headline": "Bitcoin dominance rises to 55% as altcoins struggle",
+        "source": "CoinMarketCap",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 63,
+        "asset": "BTC",
+        "headline": "Tesla resumes Bitcoin payments globally",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 64,
+        "asset": "BTC",
+        "headline": "Bitcoin halving drives miner revenue concerns",
+        "source": "CoinDesk",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 65,
+        "asset": "BTC",
+        "headline": "Fidelity launches Bitcoin retirement accounts",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 66,
+        "asset": "BTC",
+        "headline": "Bitcoin on-chain metrics signal accumulation phase",
+        "source": "Glassnode",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 67,
+        "asset": "BTC",
+        "headline": "FREE 1000$ Bitcoin giveaway ends tonight!",
+        "source": "Twitter",
+        "sentiment_hint": "spam"
+    },
+    {
+        "id": 68,
+        "asset": "BTC",
+        "headline": "Bitcoin futures open interest reaches $20B",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 69,
+        "asset": "BTC",
+        "headline": "Congressional hearing on Bitcoin goes favorably",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 70,
+        "asset": "BTC",
+        "headline": "Bitcoin correlation with tech stocks decreases",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 71,
+        "asset": "AAPL",
+        "headline": "Apple Intelligence features roll out to all devices",
+        "source": "Apple Newsroom",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 72,
+        "asset": "AAPL",
+        "headline": "Foxconn expands Apple production capacity by 30%",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 73,
+        "asset": "AAPL",
+        "headline": "Apple faces battery lawsuit settlement of $500M",
+        "source": "Bloomberg",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 74,
+        "asset": "AAPL",
+        "headline": "App Store revenue reaches $100B annually",
+        "source": "CNBC",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 75,
+        "asset": "AAPL",
+        "headline": "Apple loses key chip designer to competitor",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 76,
+        "asset": "AAPL",
+        "headline": "iOS 19 adoption rate fastest in Apple history",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 77,
+        "asset": "AAPL",
+        "headline": "Apple retail stores see 15% foot traffic increase",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 78,
+        "asset": "AAPL",
+        "headline": "Hedge funds reduce Apple positions in Q3",
+        "source": "SEC Filing",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 79,
+        "asset": "AAPL",
+        "headline": "Apple Music subscriber count tops 100 million",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 80,
+        "asset": "AAPL",
+        "headline": "Apple supply chain issues largely resolved",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 81,
+        "asset": "GOLD",
+        "headline": "World Gold Council reports record Q1 demand",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 82,
+        "asset": "GOLD",
+        "headline": "Gold prices pressured by stronger dollar",
+        "source": "Reuters",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 83,
+        "asset": "GOLD",
+        "headline": "Major gold discovery in Nevada sparks excitement",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 84,
+        "asset": "GOLD",
+        "headline": "Gold vs Bitcoin debate intensifies among investors",
+        "source": "CNBC",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 85,
+        "asset": "GOLD",
+        "headline": "Singapore increases gold reserves by 20 tons",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 86,
+        "asset": "GOLD",
+        "headline": "Gold technical analysis shows bullish pennant",
+        "source": "TradingView",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 87,
+        "asset": "GOLD",
+        "headline": "Barrick Gold raises dividend by 10%",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 88,
+        "asset": "GOLD",
+        "headline": "Gold demand for technology applications growing",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 89,
+        "asset": "GOLD",
+        "headline": "Recession fears boost gold allocation in portfolios",
+        "source": "Goldman Sachs",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 90,
+        "asset": "GOLD",
+        "headline": "Gold royalty companies outperform miners",
+        "source": "Bloomberg",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 91,
+        "asset": "BTC",
+        "headline": "Bitcoin network processes $10T in annual volume",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 92,
+        "asset": "BTC",
+        "headline": "Germany releases seized Bitcoin worth $2B",
+        "source": "Bloomberg",
+        "sentiment_hint": "negative"
+    },
+    {
+        "id": 93,
+        "asset": "BTC",
+        "headline": "Bitcoin Ordinals NFT volume surges 200%",
+        "source": "CoinDesk",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 94,
+        "asset": "BTC",
+        "headline": "Marathon Digital boosts Bitcoin mining capacity",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 95,
+        "asset": "BTC",
+        "headline": "Bitcoin staking derivatives gain regulatory clarity",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 96,
+        "asset": "BTC",
+        "headline": "Wyoming passes Bitcoin-friendly legislation",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 97,
+        "asset": "BTC",
+        "headline": "Join VIP Telegram - 500% daily gains guaranteed!",
+        "source": "Telegram",
+        "sentiment_hint": "spam"
+    },
+    {
+        "id": 98,
+        "asset": "BTC",
+        "headline": "Bitcoin HODLers at all-time high percentage",
+        "source": "Glassnode",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 99,
+        "asset": "BTC",
+        "headline": "Japan pension fund considers Bitcoin allocation",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 100,
+        "asset": "BTC",
+        "headline": "Bitcoin volatility index at 6-month low",
+        "source": "Bloomberg",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 101,
+        "asset": "AAPL",
+        "headline": "Apple announces breakthrough in battery technology",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 102,
+        "asset": "AAPL",
+        "headline": "Tim Cook visits China amid regulatory concerns",
+        "source": "Bloomberg",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 103,
+        "asset": "GOLD",
+        "headline": "Gold ratio to silver reaches extreme levels",
+        "source": "Reuters",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 104,
+        "asset": "GOLD",
+        "headline": "Polish central bank adds 100 tons of gold",
+        "source": "Official Report",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 105,
+        "asset": "BTC",
+        "headline": "Coinbase reports record institutional volume",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 106,
+        "asset": "AAPL",
+        "headline": "Apple Health features save lives worldwide",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 107,
+        "asset": "GOLD",
+        "headline": "Gold recycling reaches record levels globally",
+        "source": "World Gold Council",
+        "sentiment_hint": "neutral"
+    },
+    {
+        "id": 108,
+        "asset": "BTC",
+        "headline": "Bitcoin difficulty adjustment confirms network strength",
+        "source": "CoinDesk",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 109,
+        "asset": "AAPL",
+        "headline": "Apple AR glasses rumored for 2026 launch",
+        "source": "Bloomberg",
+        "sentiment_hint": "positive"
+    },
+    {
+        "id": 110,
+        "asset": "GOLD",
+        "headline": "Gold becomes third largest reserve asset globally",
+        "source": "Reuters",
+        "sentiment_hint": "positive"
+    }
+]
