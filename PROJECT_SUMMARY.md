@@ -60,7 +60,7 @@ Open your browser to: **`http://localhost:8000`**
 
 ---
 
-## 4. Development Workflow
+## 4. Development Workflow:
 
 If you want to edit the Frontend:
 1. Open a new terminal in `/sentitrade-frontend`
