@@ -15,7 +15,7 @@ from app.config import settings
 from app.database import Base
 # SentimentStreamer imported lazily in lifespan to avoid blocking startup with FinBERT
 from app.ws.manager import WebSocketManager
-from app.routes import auth, sentiment, signal, whale, price, alert, health, portfolio, market, settings as settings_router, backtest
+from app.routes import auth, sentiment, signal, whale, price, alert, health, portfolio, market, settings as settings_router, backtest, xai, history
 
 
 
@@ -79,8 +79,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     whale_service = WhaleService(async_session_maker, ws_manager)
     await whale_service.start()
 
-
-    
+    # Start Sovereign Data Manager
+    from app.services.async_data_manager import init_data_manager
+    global data_manager
+    data_manager = init_data_manager(ws_manager)
+    await data_manager.start()
+    logger.info("✅ Sovereign Data Manager started (15s polling)")    
     yield
     
     # Shutdown
@@ -116,6 +120,8 @@ app.include_router(market.router, prefix="/api/v1/market", tags=["Market"])
 app.include_router(settings_router.router, prefix="/api/v1/settings", tags=["Settings"])
 app.include_router(backtest.router, prefix="/api/v1/backtest", tags=["Backtest"])
 app.include_router(backtest.router, prefix="/api/v1/backtest", tags=["Backtest"])
+app.include_router(xai.router, prefix="/api/v1/xai", tags=["XAI Console"])
+app.include_router(history.router, prefix="/api/v1", tags=["History"])
 app.include_router(health.router, tags=["Health"])
 
 # Serve Static Files (Frontend)

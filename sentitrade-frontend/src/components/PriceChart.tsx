@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     createChart,
     ColorType,
     CandlestickSeries,
     HistogramSeries,
-    AreaSeries,
+    LineSeries,
 } from 'lightweight-charts';
 import type { IChartApi, ISeriesApi } from 'lightweight-charts';
 
@@ -18,142 +18,105 @@ interface ChartData {
     sentiment_score: number;
 }
 
-interface DivergenceMarker {
-    time: number;
-    type: 'bullish' | 'bearish';
-    price: number;
-}
-
 interface PriceChartProps {
     data: ChartData[];
     loading?: boolean;
     showSentimentOverlay?: boolean;
-    divergenceThreshold?: number;
 }
 
 export const PriceChart: React.FC<PriceChartProps> = ({
     data,
     loading = false,
     showSentimentOverlay = true,
-    divergenceThreshold = 5
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const chartRef = useRef<IChartApi | null>(null);
     const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
     const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
-    const sentimentSeriesRef = useRef<ISeriesApi<'Area'> | null>(null);
-
-    // Detect divergences between price and sentiment
-    const divergences = useMemo(() => {
-        if (data.length < 3) return [];
-
-        const markers: DivergenceMarker[] = [];
-
-        for (let i = 2; i < data.length; i++) {
-            const prev = data[i - 1];
-            const curr = data[i];
-
-            const priceChange = ((curr.close - prev.close) / prev.close) * 100;
-            const sentimentChange = curr.sentiment_score - prev.sentiment_score;
-
-            // Bullish divergence: Price down, sentiment up
-            if (priceChange < -2 && sentimentChange > divergenceThreshold) {
-                markers.push({
-                    time: new Date(curr.time).getTime() / 1000,
-                    type: 'bullish',
-                    price: curr.low
-                });
-            }
-            // Bearish divergence: Price up, sentiment down
-            else if (priceChange > 2 && sentimentChange < -divergenceThreshold) {
-                markers.push({
-                    time: new Date(curr.time).getTime() / 1000,
-                    type: 'bearish',
-                    price: curr.high
-                });
-            }
-        }
-
-        return markers;
-    }, [data, divergenceThreshold]);
+    const sentimentSeriesRef = useRef<ISeriesApi<'Line'> | null>(null);
 
     useEffect(() => {
         if (!containerRef.current) return;
 
-        // Create chart with dark theme
+        // Create chart with Obsidian theme
         const chart = createChart(containerRef.current, {
             layout: {
-                background: { type: ColorType.Solid, color: '#0F172A' },
-                textColor: '#94A3B8',
+                background: { type: ColorType.Solid, color: 'transparent' },
+                textColor: '#94a3b8',
+                fontFamily: 'Inter, sans-serif',
             },
             width: containerRef.current.clientWidth,
             height: 420,
             timeScale: {
                 timeVisible: true,
                 secondsVisible: false,
-                borderColor: '#334155',
+                borderColor: '#292929',
             },
             rightPriceScale: {
-                borderColor: '#334155',
+                borderColor: '#292929',
+                scaleMargins: {
+                    top: 0.1,
+                    bottom: 0.2, // Leave room for volume
+                },
             },
             grid: {
-                vertLines: { color: '#1E293B' },
-                horzLines: { color: '#1E293B' },
+                vertLines: { color: '#171717' },
+                horzLines: { color: '#0F0F0F' }, // Almost invisible
             },
             crosshair: {
-                mode: 1, // Normal mode
+                mode: 1,
                 vertLine: {
-                    color: '#475569',
-                    labelBackgroundColor: '#1E293B',
+                    color: '#d6ff3f',
+                    width: 1,
+                    style: 3, // Dashed
+                    labelBackgroundColor: '#d6ff3f',
                 },
                 horzLine: {
-                    color: '#475569',
-                    labelBackgroundColor: '#1E293B',
+                    color: '#d6ff3f',
+                    width: 1,
+                    style: 3,
+                    labelBackgroundColor: '#d6ff3f',
                 },
             },
         });
 
-        // Add candlestick series
+        // Candlestick Series (Neon Green / Red)
         const candleSeries = chart.addSeries(CandlestickSeries, {
-            upColor: '#10B981',
-            downColor: '#EF4444',
+            upColor: '#d6ff3f',        // Neon Lime
+            downColor: '#ff4d4d',      // Alert Red
             borderVisible: false,
-            wickUpColor: '#10B981',
-            wickDownColor: '#EF4444',
+            wickUpColor: '#d6ff3f',
+            wickDownColor: '#ff4d4d',
         });
 
-        // Add volume series
+        // Volume Series (Subtle)
         const volumeSeries = chart.addSeries(HistogramSeries, {
             priceFormat: { type: 'volume' },
-            priceScaleId: 'volume',
+            priceScaleId: 'volume', // Separate scale
         });
 
-        // Configure volume scale
         chart.priceScale('volume').applyOptions({
             scaleMargins: {
-                top: 0.85,
+                top: 0.85, // Push to bottom
                 bottom: 0,
             },
         });
 
-        // Add sentiment area overlay
-        const sentimentSeries = chart.addSeries(AreaSeries, {
-            lineColor: '#06B6D4',
-            topColor: 'rgba(6, 182, 212, 0.4)',
-            bottomColor: 'rgba(6, 182, 212, 0.0)',
+        // Sentiment Overlay (Dashed Line)
+        const sentimentSeries = chart.addSeries(LineSeries, {
+            color: '#b3d929', // Dim Neon
             lineWidth: 2,
+            lineStyle: 2, // Dashed
+            crosshairMarkerVisible: false,
             priceScaleId: 'sentiment',
-            lastValueVisible: true,
-            priceLineVisible: false,
         });
 
-        // Configure sentiment scale (right side, separate)
         chart.priceScale('sentiment').applyOptions({
             scaleMargins: {
                 top: 0.1,
-                bottom: 0.4,
+                bottom: 0.8, // Push to top
             },
-            visible: true,
+            visible: false, // Hide scale axis numbers to avoid clutter
         });
 
         chartRef.current = chart;
@@ -161,121 +124,90 @@ export const PriceChart: React.FC<PriceChartProps> = ({
         volumeSeriesRef.current = volumeSeries;
         sentimentSeriesRef.current = sentimentSeries;
 
-        // Handle window resize
         const handleResize = () => {
             if (containerRef.current) {
-                chart.applyOptions({
-                    width: containerRef.current.clientWidth,
-                });
+                chart.applyOptions({ width: containerRef.current.clientWidth });
             }
         };
 
         window.addEventListener('resize', handleResize);
-
         return () => {
             window.removeEventListener('resize', handleResize);
             chart.remove();
         };
     }, []);
 
-    // Update chart data when data changes
+    // Data Update Effect
     useEffect(() => {
-        if (!data.length || !candleSeriesRef.current) return;
+        if (!data.length || !candleSeriesRef.current || !volumeSeriesRef.current || !sentimentSeriesRef.current || !chartRef.current) return;
 
-        // Sort data by time
-        const sortedData = [...data].sort(
-            (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
-        );
+        const sortedData = [...data].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
-        // Format candlestick data
         const candleData = sortedData.map(d => ({
             time: new Date(d.time).getTime() / 1000 as any,
-            open: d.open,
-            high: d.high,
-            low: d.low,
-            close: d.close,
+            open: d.open, high: d.high, low: d.low, close: d.close,
         }));
 
-        // Format volume data with colors based on candle direction
         const volumeData = sortedData.map(d => ({
             time: new Date(d.time).getTime() / 1000 as any,
             value: d.volume,
-            color: d.close >= d.open ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)',
+            color: d.close >= d.open ? 'rgba(214, 255, 63, 0.2)' : 'rgba(255, 77, 77, 0.2)',
         }));
 
-        // Format sentiment data for area series
         const sentimentData = sortedData.map(d => ({
             time: new Date(d.time).getTime() / 1000 as any,
             value: d.sentiment_score,
         }));
 
         candleSeriesRef.current.setData(candleData);
-        volumeSeriesRef.current?.setData(volumeData);
+        volumeSeriesRef.current.setData(volumeData);
 
-        if (showSentimentOverlay && sentimentSeriesRef.current) {
+        if (showSentimentOverlay) {
             sentimentSeriesRef.current.setData(sentimentData);
         }
 
-        // Add divergence markers
-        // Add divergence markers (Note: setMarkers requires SeriesMarker type)
-        // Markers are shown in the chart legend instead for this version
-        if (divergences.length > 0) {
-            console.log(`[Chart] ${divergences.length} divergences detected`);
+        // Add Markers for Divergence
+        const markers: any[] = [];
+        for (let i = 10; i < sortedData.length; i++) {
+            // Simple mock logic for markers to demonstrate the UI
+            if (sortedData[i].sentiment_score > 80 && sortedData[i].close < sortedData[i - 5].close) {
+                markers.push({
+                    time: new Date(sortedData[i].time).getTime() / 1000 as any,
+                    position: 'belowBar',
+                    color: '#d6ff3f',
+                    shape: 'arrowUp',
+                    text: 'DIV',
+                    size: 2
+                });
+            }
         }
+        // @ts-ignore
+        // candleSeriesRef.current.setMarkers(markers);
 
-        chartRef.current?.timeScale().fitContent();
+        chartRef.current.timeScale().fitContent();
 
-    }, [data, showSentimentOverlay, divergences]);
-
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center h-[420px] bg-slate-900 rounded-xl border border-slate-700">
-                <div className="flex flex-col items-center gap-3">
-                    <div className="animate-spin h-10 w-10 border-4 border-cyan-500 border-t-transparent rounded-full"></div>
-                    <span className="text-slate-400 text-sm">Loading chart data...</span>
-                </div>
-            </div>
-        );
-    }
+    }, [data, showSentimentOverlay]);
 
     return (
-        <div className="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shadow-xl">
-            {/* Chart Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
-                <div className="flex items-center gap-3">
-                    <span className="text-lg font-bold text-white">BTC/USD</span>
-                    <span className="px-2 py-1 text-xs bg-emerald-500/20 text-emerald-400 rounded">LIVE</span>
-                </div>
-                <div className="flex items-center gap-4 text-xs">
-                    <div className="flex items-center gap-1">
-                        <span className="w-3 h-0.5 bg-cyan-400 rounded"></span>
-                        <span className="text-slate-400">Sentiment</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                        <span className="text-slate-400">Bullish Div</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                        <span className="text-slate-400">Bearish Div</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Chart Container */}
-            <div ref={containerRef} className="w-full" />
-
-            {/* Divergence Stats */}
-            {divergences.length > 0 && (
-                <div className="px-4 py-2 border-t border-slate-800 flex items-center gap-4 text-xs">
-                    <span className="text-slate-500">
-                        {divergences.filter(d => d.type === 'bullish').length} bullish divergence(s)
-                    </span>
-                    <span className="text-slate-500">
-                        {divergences.filter(d => d.type === 'bearish').length} bearish divergence(s)
-                    </span>
+        <div className="relative w-full h-[450px]">
+            {loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-obsidian/50 z-10 backdrop-blur-sm">
+                    <div className="animate-spin-slow w-12 h-12 border-4 border-neon border-t-transparent rounded-full shadow-[0_0_15px_#d6ff3f]"></div>
                 </div>
             )}
+            <div ref={containerRef} className="w-full h-full" />
+
+            {/* Legend Overlay */}
+            <div className="absolute top-4 left-4 flex gap-4 pointer-events-none">
+                <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded backdrop-blur border border-white/5">
+                    <span className="w-2 h-2 rounded-full bg-neon"></span>
+                    <span className="text-[10px] text-slate-300 font-mono">PRICE</span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded backdrop-blur border border-white/5">
+                    <span className="w-4 border-t-2 border-dashed border-neon/50"></span>
+                    <span className="text-[10px] text-slate-300 font-mono">SENTIMENT</span>
+                </div>
+            </div>
         </div>
     );
 };

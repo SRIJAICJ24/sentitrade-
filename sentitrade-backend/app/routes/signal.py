@@ -19,10 +19,11 @@ async def get_latest_signal(db: AsyncSession = Depends(get_db)):
     
     if not signal:
         # Generate mock signal
-        mock_signal = await signal_generator.generate_signal(
+        mock_signal = await signal_generator.generate_signal_simple(
             sentiment_score=random.uniform(70, 90),
-            current_price=42850.50,
+            current_price=0, # Will be ignored by data_fetcher
             volatility=1.8,
+            asset="RELIANCE.NS"
         )
         if mock_signal:
             return {"data": mock_signal, "success": True}

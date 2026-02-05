@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''; // Use relative path for proxy
 const API_V1_URL = import.meta.env.VITE_API_V1_URL || `${API_BASE_URL}/api/v1`;
 
 // API client for /api/v1 routes

@@ -14,7 +14,21 @@ async def get_price_chart(
     hours: int = Query(24, ge=1, le=168),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get price chart data"""
+    """Get price chart data (Real -> DB -> Mock)"""
+    from app.services.market_data import market_data_service
+    
+    # 1. Try fetching Real-Time Data from YFinance (Priority for Dashboard)
+    # We map 'hours' to period loosely
+    period = "1d"
+    interval = "15m" 
+    if hours > 24:
+        period = "5d"
+        interval = "1h"
+        
+    real_history = await market_data_service.get_history(asset, period=period, interval=interval)
+    if real_history:
+        return {"data": real_history, "success": True}
+        
     start_time = datetime.utcnow() - timedelta(hours=hours)
     
     result = await db.execute(
@@ -26,7 +40,7 @@ async def get_price_chart(
     prices = result.scalars().all()
     
     if not prices:
-        # Generate mock chart data
+        # Fallback Mock only if YFinance fails
         base_price = 42000
         mock_prices = []
         for i in range(100):

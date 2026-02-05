@@ -4,11 +4,11 @@ from app.services.market_data import market_data_service
 router = APIRouter()
 
 @router.get("/search")
-async def search_market(query: str):
+def search_market(query: str):
     """Search for assets by ticker or name"""
     if not query:
         return []
-    results = await market_data_service.search_assets(query)
+    results = market_data_service.search_assets(query)
     return results
 
 @router.get("/quote/{ticker}")

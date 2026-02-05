@@ -37,15 +37,18 @@ const MOCK_SIGNAL: Signal = {
     expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 mins from now
 };
 
-export const useSignal = () => {
+export const useSignal = (asset?: string) => {
     const [signal, setSignal] = useState<Signal | null>(null);
     const [loading, setLoading] = useState(true);
     const { on, off } = useWebSocket();
 
     useEffect(() => {
         const fetchLatestSignal = async () => {
+            setLoading(true); // Reset loading on asset change
             try {
-                const response = await apiClient.get('/signal/latest');
+                // Pass asset as query param if available
+                const url = asset ? `/signal/latest?asset=${asset}` : '/signal/latest';
+                const response = await apiClient.get(url);
                 if (response.data.data) {
                     setSignal(response.data.data);
                 } else {
@@ -64,7 +67,10 @@ export const useSignal = () => {
         fetchLatestSignal();
 
         const handleNewSignal = (newSignal: Signal) => {
-            setSignal(newSignal);
+            // Only update if signal matches current asset or general if undefined
+            if (!asset || newSignal.asset_code === asset) {
+                setSignal(newSignal);
+            }
         };
 
         on('signal:new', handleNewSignal);
@@ -72,7 +78,7 @@ export const useSignal = () => {
         return () => {
             off('signal:new', handleNewSignal);
         };
-    }, [on, off]);
+    }, [on, off, asset]); // Re-run when asset changes
 
     return { signal, loading };
 };

@@ -283,6 +283,7 @@ class XAISignalGenerator:
         return base_signal
 
     
+
     async def generate_signal_simple(
         self,
         sentiment_score: float,
@@ -292,17 +293,44 @@ class XAISignalGenerator:
         asset: str = "BTC"
     ) -> Optional[dict]:
         """
-        Simplified signal generation for backward compatibility.
+        Signals now use REAL MARKET DATA from the Indian Data Fetcher.
+        If fetch fails, falls back to provided mock values.
         """
-        ctx = SignalContext(
-            asset=asset,
-            sentiment_score=sentiment_score,
-            sentiment_change=0,
-            price=current_price,
-            price_change=0,
-            trend=trend,
-            volatility=volatility
-        )
+        from app.services.data_fetcher import data_fetcher
+        
+        # Try to get real data
+        real_data = await data_fetcher.fetch_live_quote(asset)
+        
+        if real_data and real_data.get('quality_score', 0) > 80:
+            price_to_use = real_data['close']
+            # Calculate trend from open vs close
+            trend_calc = "FLAT"
+            if real_data['close'] > real_data['open']:
+                trend_calc = "UP"
+            elif real_data['close'] < real_data['open']:
+                trend_calc = "DOWN"
+                
+            ctx = SignalContext(
+                asset=asset,
+                sentiment_score=sentiment_score,
+                sentiment_change=0,
+                price=price_to_use,
+                price_change=((real_data['close'] - real_data['prev_close']) / real_data['prev_close']) * 100,
+                trend=trend_calc,
+                volatility=volatility
+            )
+        else:
+            # Fallback to mock if data fetch failed or quality low
+            ctx = SignalContext(
+                asset=asset,
+                sentiment_score=sentiment_score,
+                sentiment_change=0,
+                price=current_price,
+                price_change=0,
+                trend=trend,
+                volatility=volatility
+            )
+            
         return await self.generate_signal(ctx)
 
 

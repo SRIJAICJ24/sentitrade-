@@ -219,37 +219,61 @@ class MarketDataService:
         
         return round(volatility, 2)
     
-    async def search_assets(self, query: str) -> list:
+    def search_assets(self, query: str) -> list:
         """
-        Search for assets.
-        
-        Args:
-            query: Search string (e.g., "AAPL", "Gold")
-            
-        Returns:
-            List of matching assets
+        Search for assets using NIFTY 500 database (synchronous)
         """
-        # First check strict mapping for common names
         query_upper = query.upper()
+        results = []
         
-        # Reverse map for name search
-        for sym, name in self.SYMBOL_NAMES.items():
-            if query_upper in name.upper() or query_upper in sym:
-                # Get live data for this known symbol
-                price_data = await self.get_price(sym)
-                return [{
-                    "symbol": sym,
-                    "name": name,
-                    "type": "KNOWN",
-                    "exchange": "N/A",
-                    "price": price_data.get("price", 0.0),
-                    "currency": price_data.get("currency", "USD")
-                }]
-        
-        # If not known, try yfinance lookup
-        loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(_executor, _search_tickers, query)
-        return result
+        # 1. Load Static Database (Lazy Load) - Simplified
+        if not hasattr(self, '_nifty_db'):
+            import json
+            import os
+            try:
+                # Resolve path relative to this file
+                base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                json_path = os.path.join(base_dir, "data", "nifty_500.json")
+                
+                with open(json_path, "r", encoding='utf-8') as f:
+                    self._nifty_db = json.load(f)
+                print(f"Loaded {len(self._nifty_db)} stocks from database")
+            except Exception as e:
+                print(f"ERROR loading JSON: {e}")
+                self._nifty_db = []
+
+        # 2. Filter Static DB
+        if self._nifty_db:
+            for item in self._nifty_db:
+                try:
+                    if query_upper in item['symbol'] or query_upper in item['name'].upper():
+                        results.append({
+                            "symbol": item['symbol'],
+                            "name": item['name'],
+                            "type": "STOCK",
+                            "exchange": "NSE",
+                            "price": "Live Check",
+                            "currency": "INR"
+                        })
+                        if len(results) >= 10: 
+                            break
+                except Exception as e:
+                    print(f"Error processing item: {e}")
+                    continue
+
+        # 3. If no static results, allow custom ticker
+        if not results:
+            if ".NS" in query_upper or ".BO" in query_upper:
+                results.append({
+                    "symbol": query_upper,
+                    "name": query_upper,
+                    "type": "CUSTOM",
+                    "exchange": "NSE/BSE",
+                    "price": "Check",
+                    "currency": "INR"
+                })
+
+        return results
 
 
 # Singleton instance

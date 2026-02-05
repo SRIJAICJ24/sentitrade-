@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSignal } from '../hooks/useSignal';
 
+import { useMarketStore } from '../store/marketStore';
+
 export const TradingSignal: React.FC = () => {
-    const { signal, loading } = useSignal();
+    const { activeAsset } = useMarketStore();
+    const { signal, loading } = useSignal(activeAsset);
     const [dismissed, setDismissed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(0);
 
