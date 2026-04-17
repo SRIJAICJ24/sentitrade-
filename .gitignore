@@ -17,3 +17,13 @@ Thumbs.db
 # Environment
 .env
 *.pyc
+.vercel
+
+# Nested Repositories (Manage separately)
+worldmonitor/
+KleinGuard/
+
+# Logs and Journals
+*.log
+sentitrade-backend/*.log
+sentitrade-backend/sentitrade.db-journal

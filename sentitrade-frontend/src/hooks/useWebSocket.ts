@@ -7,9 +7,14 @@
  * - New API: lastTick, allTicks, connect, disconnect
  */
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+const DEFAULT_WS_URL =
+    typeof window === 'undefined'
+        ? 'ws://localhost:8000/ws'
+        : `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/ws`;
+
+const WS_URL = import.meta.env.VITE_WS_URL || DEFAULT_WS_URL;
 
 export interface PriceTick {
     asset: string;

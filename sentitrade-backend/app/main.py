@@ -8,14 +8,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 from app.config import settings
 from app.database import Base
 # SentimentStreamer imported lazily in lifespan to avoid blocking startup with FinBERT
 from app.ws.manager import WebSocketManager
-from app.routes import auth, sentiment, signal, whale, price, alert, health, portfolio, market, settings as settings_router, backtest, xai, history
+from app.routes import auth, sentiment, signal, whale, price, alert, health, portfolio, market, settings as settings_router, backtest, xai, history, algorithms, social
 
 
 
@@ -119,10 +118,11 @@ app.include_router(portfolio.router, prefix="/api/v1/portfolio", tags=["Portfoli
 app.include_router(market.router, prefix="/api/v1/market", tags=["Market"])
 app.include_router(settings_router.router, prefix="/api/v1/settings", tags=["Settings"])
 app.include_router(backtest.router, prefix="/api/v1/backtest", tags=["Backtest"])
-app.include_router(backtest.router, prefix="/api/v1/backtest", tags=["Backtest"])
 app.include_router(xai.router, prefix="/api/v1/xai", tags=["XAI Console"])
 app.include_router(history.router, prefix="/api/v1", tags=["History"])
 app.include_router(health.router, tags=["Health"])
+app.include_router(algorithms.router, prefix="/api/v1/algorithms", tags=["Algorithms"])
+app.include_router(social.router, prefix="/api/v1/social", tags=["WorldMonitor Social Convergence"])
 
 # Serve Static Files (Frontend)
 # Must be AFTER API routes so they take precedence

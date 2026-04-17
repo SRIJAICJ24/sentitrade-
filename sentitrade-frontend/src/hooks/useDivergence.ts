@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { apiClient } from '../api/client';
 import { useWebSocket } from './useWebSocket';
+import { useMarketStore } from '../store/marketStore';
 
 export interface Divergence {
     divergence_type: 'bullish' | 'bearish';
@@ -22,14 +23,19 @@ const MOCK_DIVERGENCE: Divergence = {
 };
 
 export const useDivergence = () => {
+    const { activeAsset } = useMarketStore();
     const [divergence, setDivergence] = useState<Divergence | null>(null);
     const [loading, setLoading] = useState(true);
     const { on, off } = useWebSocket();
 
     useEffect(() => {
         const fetchDivergence = async () => {
+            setLoading(true);
             try {
-                const response = await apiClient.get('/price/divergence');
+                // Pass asset to API for future-proof scoping
+                const response = await apiClient.get('/price/divergence', {
+                    params: { asset: activeAsset }
+                });
                 setDivergence(response.data.data || MOCK_DIVERGENCE);
             } catch (err) {
                 console.error('Failed to fetch divergence, using mock:', err);
@@ -43,7 +49,10 @@ export const useDivergence = () => {
         fetchDivergence();
 
         const handleUpdate = (data: Divergence) => {
-            setDivergence(data);
+            // Only update if it's for the active asset or we are in global mode
+            if (!activeAsset || data.asset_code === activeAsset) {
+                setDivergence(data);
+            }
         };
 
         on('divergence:update', handleUpdate);
@@ -51,7 +60,7 @@ export const useDivergence = () => {
         return () => {
             off('divergence:update', handleUpdate);
         };
-    }, [on, off]);
+    }, [on, off, activeAsset]);
 
     return { divergence, loading };
 };

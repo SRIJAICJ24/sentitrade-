@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, Zap, Heart, TrendingUp, Bot } from 'lucide-react';
+import { Briefcase, Zap, Heart, TrendingUp, Bot, TreePine } from 'lucide-react';
 
 interface FloatingOrbsProps {
     currentView: string;
@@ -49,6 +49,7 @@ export const FloatingOrbs: React.FC<FloatingOrbsProps> = ({ currentView, onNavig
                 <Orb id="xai_advisor" icon={Bot} center glow />
 
                 {/* Right Group */}
+                <Orb id="algorithms" icon={TreePine} />
                 <Orb id="wishlist" icon={Heart} />
                 <Orb id="momentum" icon={TrendingUp} />
             </div>

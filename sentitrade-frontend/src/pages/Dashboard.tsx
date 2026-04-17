@@ -3,17 +3,10 @@ import React from 'react';
 import { SentimentGauge } from '../components/SentimentGauge';
 import { TradingSignal } from '../components/TradingSignal';
 import { GlobalSearch } from '../components/dashboard/GlobalSearch';
-import { PriceChart } from '../components/PriceChart';
-import { WhaleTracker } from '../components/WhaleTracker';
-import { DivergenceDetector } from '../components/DivergenceDetector';
+import { GlobalRadarView } from './GlobalRadarView';
+import { PortfolioView } from './PortfolioView';
+import { SovereignFooterTicker } from '../components/dashboard/SovereignFooterTicker';
 
-import { SentiQuantFeed } from '../components/dashboard/SentiQuantFeed';
-import { WealthVault } from '../components/dashboard/WealthVault';
-import { SmartWishlist } from '../components/dashboard/SmartWishlist';
-import GuardianStatus from '../components/dashboard/GuardianStatus';
-import { BacktestResults } from '../components/dashboard/BacktestResults';
-import { PatternRadar } from '../components/dashboard/PatternRadar';
-import { XAIAdvisor } from '../components/XAIAdvisor';
 import { useMarketStore } from '../store/marketStore';
 import { getHistory } from '../api/dataService';
 import { TrendingUp } from 'lucide-react';
@@ -23,21 +16,65 @@ export default function Dashboard() {
 
     const [chartData, setChartData] = React.useState<any[]>([]);
     const [loadingChart, setLoadingChart] = React.useState(false);
+    const [mapView, setMapView] = React.useState<'globe' | 'tactical'>('globe');
 
     // Fetch Chart Data on Asset Change (Using Sovereign Data Pipeline)
     React.useEffect(() => {
+        if (!activeAsset) {
+            setChartData([]);
+            return;
+        }
+
         const fetchChartData = async () => {
             setLoadingChart(true);
             try {
-                // Use new Sovereign Data Pipeline endpoint
-                const data = await getHistory(activeAsset, 30); // 30 days for better visualization
+                // Fetch explicitly supported 30 days of data to prevent API rejection
+                const data = await getHistory(activeAsset, 30);
                 if (data && data.length > 0) {
-                    // Add sentiment placeholder to each candle (required by PriceChart)
-                    const enrichedData = data.map(candle => ({
-                        ...candle,
-                        sentiment_score: 50 + Math.random() * 30, // Mock sentiment for now
-                    }));
-                    setChartData(enrichedData);
+                    // Sort data chronologically to calculate accurate momentum indicators
+                    const sortedData = [...data].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+                    
+                    // 14-Period RSI Calculation for "Accurate Momentum Sentiment"
+                    const rsiPeriod = 14;
+                    let gains = 0;
+                    let losses = 0;
+                    let avgGain = 0;
+                    let avgLoss = 0;
+                    
+                    const enrichedData = sortedData.map((candle, index) => {
+                        let currentRSI = 50; // Default neutral
+
+                        if (index > 0) {
+                            const change = candle.close - sortedData[index - 1].close;
+                            const gain = change > 0 ? change : 0;
+                            const loss = change < 0 ? Math.abs(change) : 0;
+
+                            if (index < rsiPeriod) {
+                                gains += gain;
+                                losses += loss;
+                            } else if (index === rsiPeriod) {
+                                avgGain = gains / rsiPeriod;
+                                avgLoss = losses / rsiPeriod;
+                                const rs = avgGain / (avgLoss === 0 ? 1 : avgLoss);
+                                currentRSI = 100 - (100 / (1 + rs));
+                            } else {
+                                avgGain = ((avgGain * (rsiPeriod - 1)) + gain) / rsiPeriod;
+                                avgLoss = ((avgLoss * (rsiPeriod - 1)) + loss) / rsiPeriod;
+                                const rs = avgGain / (avgLoss === 0 ? 1 : avgLoss);
+                                currentRSI = 100 - (100 / (1 + rs));
+                            }
+                        }
+
+                        return {
+                            ...candle,
+                            // Assign Mathematical RSI as Sentiment (0-100 scale)
+                            sentiment_score: Math.min(100, Math.max(0, currentRSI)),
+                        };
+                    });
+
+                    // Only take the last 30 days to display if we requested 60 for calculation buffer
+                    const displayData = enrichedData.slice(-30);
+                    setChartData(displayData);
                 } else {
                     setChartData([]);
                 }
@@ -53,106 +90,59 @@ export default function Dashboard() {
     }, [activeAsset]);
 
     return (
-        <div className="p-4 md:p-8 pt-24 pb-32 max-w-[1600px] mx-auto space-y-8">
-            {/* Header Section */}
-            <div className="grid grid-cols-12 items-center gap-4 mb-8">
-                {/* Brand / Title (Cols 1-3) */}
-                <div className="col-span-12 md:col-span-3 flex flex-col">
-                    <h1 className="text-3xl font-extrabold text-white tracking-tighter font-['Urbanist']">
-                        MISSION CONTROL
-                    </h1>
-                    <span className="text-[10px] tracking-[0.2em] text-neon uppercase font-mono">
-                        SentiTrade Pro v2.0
-                    </span>
-                </div>
-
-                {/* Global Search (Cols 4-9) - Centered & Dominant */}
-                <div className="col-span-12 md:col-span-6 relative z-50">
-                    <GlobalSearch />
-                </div>
-
-                {/* Sovereign Status & Asset (Cols 10-12) - Right Utils */}
-                <div className="col-span-12 md:col-span-3 flex flex-col items-end gap-2">
-                    {/* Sovereign Status Pill */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 border border-emerald-500/30 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        <span className="text-[10px] font-bold text-emerald-400 tracking-wider font-mono">
-                            LOCAL NODE: ACTIVE
+        <div className="min-h-screen bg-black">
+            <div className="p-4 md:p-6 lg:p-8 pt-20 md:pt-24 pb-32 max-w-[1600px] mx-auto space-y-6">
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+                    {/* Brand / Title */}
+                    <div className="flex flex-col shrink-0">
+                        <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-widest font-mono">
+                            SOVEREIGN COMMAND CENTER
+                        </h1>
+                        <span className="text-[10px] tracking-[0.2em] text-neon uppercase font-mono animate-pulse drop-shadow-[0_0_8px_#d6ff3f]">
+                            SentiTrade HUD v3.0 ONLINE
                         </span>
                     </div>
 
-                    {/* Active Asset Badge */}
-                    <div className="flex items-center gap-2 px-3 py-1 bg-obsidian-card border border-obsidian-border rounded text-xs text-slate-400">
-                        <span>Viewing:</span>
-                        <span className="text-neon font-bold">{activeAsset}</span>
+                    {/* Global Search - centered */}
+                    <div className="flex-1 relative z-50 max-w-2xl mx-auto w-full">
+                        <GlobalSearch />
                     </div>
-                </div>
-            </div>
 
-            <div className="relative z-40">
-                <TradingSignal />
-            </div>
-
-            {/* 2. MAIN ANALYTICS GRID (12 Columns) */}
-            <div className="grid grid-cols-12 gap-6">
-
-                {/* LEFT COLUMN: Deep Analytics (8 Columns) */}
-                <div className="col-span-12 lg:col-span-8 space-y-6">
-
-                    {/* Primary Chart Card */}
-                    <div className="bg-obsidian-card border border-obsidian-border rounded-xl p-1 shadow-2xl overflow-hidden group hover:border-slate-700 transition-colors">
-                        <div className="bg-black/40 p-3 border-b border-obsidian-border flex justify-between items-center">
-                            <h3 className="font-bold text-white tracking-tight flex items-center gap-2">
-                                <TrendingUp size={16} className="text-neon" />
-                                PRICE ACTION <span className="text-slate-600">v/s</span> SENTIMENT
-                            </h3>
-                            <div className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span className="text-[10px] text-emerald-400 font-mono uppercase">Live Feed</span>
-                            </div>
+                    {/* Sovereign Status & Asset - right */}
+                    <div className="flex flex-col items-start md:items-end gap-2 shrink-0">
+                        {/* Sovereign Status Pill */}
+                        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#121212] border border-[#262626] rounded-sm">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-neon"></span>
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-300 tracking-widest font-mono">
+                                UPLINK: STABLE
+                            </span>
                         </div>
-                        <div className="p-4 h-[450px]">
-                            <PriceChart data={chartData} loading={loadingChart} />
+
+                        {/* Active Asset Badge */}
+                        <div className="flex items-center gap-2 px-3 py-1 bg-[#121212] border border-[#262626] rounded-sm text-xs text-slate-400 font-mono tracking-wider">
+                            <span>TARGET:</span>
+                            <span className="text-neon font-bold drop-shadow-[0_0_5px_#d6ff3f]">{activeAsset || 'GLOBAL_SEARCH'}</span>
                         </div>
-                    </div>
-
-                    {/* Secondary Metrics Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <SentimentGauge />
-                        <DivergenceDetector />
-                    </div>
-
-                    <WealthVault />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BacktestResults />
-                        <PatternRadar />
                     </div>
                 </div>
 
-                {/* RIGHT COLUMN: Intelligence & Watchlist (4 Columns) */}
-                <div className="col-span-12 lg:col-span-4 space-y-6">
-                    <div className="sticky top-6 space-y-6">
-                        <div className="bg-obsidian-card border border-obsidian-border rounded-xl p-4 min-h-[300px]">
-                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Smart Watchlist</h3>
-                            <SmartWishlist />
-                        </div>
-
-                        <GuardianStatus />
-
-                        <SentiQuantFeed />
-
-                        <div className="bg-gradient-to-br from-indigo-900/10 to-purple-900/10 border border-indigo-500/20 rounded-xl p-4">
-                            <WhaleTracker />
-                        </div>
-
-                        <XAIAdvisor />
-                    </div>
+                <div className="relative z-40 mb-6">
+                    <TradingSignal />
                 </div>
+
+                {/* Application State Router */}
+                {!activeAsset ? (
+                    <GlobalRadarView />
+                ) : (
+                    <PortfolioView chartData={chartData} loadingChart={loadingChart} />
+                )}
             </div>
+            
+            <SovereignFooterTicker />
         </div>
     );
 }

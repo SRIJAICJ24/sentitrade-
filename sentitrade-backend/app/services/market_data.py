@@ -272,6 +272,13 @@ class MarketDataService:
                     "price": "Check",
                     "currency": "INR"
                 })
+            else:
+                # Try yfinance search
+                try:
+                    yf_results = _search_tickers(query_upper)
+                    results.extend(yf_results)
+                except Exception as e:
+                    logger.error(f"Fallback yfinance search failed: {e}")
 
         return results
 

@@ -6,8 +6,13 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': {
+      '/api/v1': {
         target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api': {
+        target: 'http://127.0.0.1:3001',
         changeOrigin: true,
         secure: false,
       },
@@ -17,7 +22,7 @@ export default defineConfig({
         secure: false,
       },
       '/ws': {
-        target: 'ws://127.0.0.1:8000',
+        target: 'ws://127.0.0.1:3001',
         ws: true,
       },
     },

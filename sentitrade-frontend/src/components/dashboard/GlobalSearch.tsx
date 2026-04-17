@@ -21,7 +21,7 @@ export const GlobalSearch: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [systemHealth, setSystemHealth] = useState<'checking' | 'online' | 'offline'>('checking');
-    const { setActiveAsset } = useMarketStore();
+    const { activeAsset, setActiveAsset } = useMarketStore();
 
     const debouncedQuery = useDebounce(query, 500);
 
@@ -107,15 +107,25 @@ export const GlobalSearch: React.FC = () => {
                 <div className="pl-6 text-slate-400">
                     {loading ? <Loader2 size={24} className="animate-spin text-neon" /> : <Search size={24} className={isFocused ? "text-neon" : ""} />}
                 </div>
-                <input
-                    type="text"
-                    className="w-full bg-transparent border-none text-white text-lg px-4 focus:ring-0 placeholder:text-slate-600 font-medium"
-                    placeholder="Search Nifty, Sensex, Chennai Gold, or Global Crypto..."
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                />
+                {activeAsset && !isFocused ? (
+                    <div className="flex-1 flex items-center px-4">
+                        <span className="text-white text-lg font-medium mr-2">Targeting: {activeAsset}</span>
+                        <button 
+                            onClick={() => { setActiveAsset(null); setQuery(''); }}
+                            className="bg-red-500/10 text-red-400 border border-red-500/30 px-2 py-0.5 rounded text-[10px] uppercase font-bold hover:bg-red-500 hover:text-white transition-colors ml-auto"
+                        >Clear Tactical Lock</button>
+                    </div>
+                ) : (
+                    <input
+                        type="text"
+                        className="w-full bg-transparent border-none text-white text-lg px-4 focus:ring-0 placeholder:text-slate-600 font-medium"
+                        placeholder="Search Nifty/Sensex, or target Crypto symbol..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+                    />
+                )}
                 <div className="pr-6 hidden md:flex items-center gap-2">
                     <kbd className={`px-2 py-1 rounded text-[10px] font-bold font-mono transition-colors ${isFocused ? 'bg-neon text-black' : 'bg-white/10 text-slate-500'}`}>CTRL+K</kbd>
                 </div>

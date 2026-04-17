@@ -4,13 +4,37 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SentiTrade Pro — AI-Powered Sentiment Trading Dashboard with FinBERT, real-time market data, and explainable AI signals for Indian retail investors." />
+    <meta name="theme-color" content="#020617" />
+    <meta name="keywords" content="sentiment trading, AI trading, FinBERT, crypto, stocks, India, NLP, market analysis" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>SentiTrade Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    
+    <!-- Globe GL Vanilla Injection -->
+    <script src="https://unpkg.com/globe.gl"></script>
+
+    <title>SentiTrade Command Center</title>
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      window.onerror = function(msg, url, lineNo, columnNo, error) {
+        var div = document.createElement('div');
+        div.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:red; color:white; z-index:99999; padding:20px; font-family:monospace; font-size:16px; overflow:auto;';
+        div.innerHTML = '<h1>GLOBAL CRASH</h1><p><b>Message:</b> ' + msg + '</p>' + (error && error.stack ? '<pre>' + error.stack + '</pre>' : '');
+        document.body.appendChild(div);
+        return false;
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        var div = document.createElement('div');
+        div.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:red; color:white; z-index:99999; padding:20px; font-family:monospace; font-size:16px; overflow:auto;';
+        div.innerHTML = '<h1>PROMISE CRASH</h1><pre>' + (event.reason && event.reason.stack ? event.reason.stack : event.reason) + '</pre>';
+        document.body.appendChild(div);
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

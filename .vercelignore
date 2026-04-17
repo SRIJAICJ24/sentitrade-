@@ -1,0 +1,7 @@
+.git
+.gitignore
+KleinGuard
+New folder
+sentitrade-backend
+sentitrade-frontend/node_modules
+sentitrade-frontend/dist

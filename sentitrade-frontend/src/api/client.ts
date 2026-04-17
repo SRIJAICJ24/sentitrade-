@@ -7,7 +7,7 @@ const API_V1_URL = import.meta.env.VITE_API_V1_URL || `${API_BASE_URL}/api/v1`;
 // API client for /api/v1 routes
 export const apiClient: AxiosInstance = axios.create({
     baseURL: API_V1_URL,
-    timeout: 10000,
+    timeout: 20000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -16,7 +16,7 @@ export const apiClient: AxiosInstance = axios.create({
 // Auth client for /auth routes (no /api/v1 prefix)
 export const authClient: AxiosInstance = axios.create({
     baseURL: API_BASE_URL,
-    timeout: 10000,
+    timeout: 20000,
     headers: {
         'Content-Type': 'application/json',
     },

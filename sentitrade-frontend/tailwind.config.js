@@ -22,9 +22,9 @@ export default {
                     dim: '#b3d929',
                 },
                 obsidian: {
-                    DEFAULT: '#000000', // Main Background
-                    card: '#171717',    // Card Background
-                    border: '#292929',  // Borders
+                    DEFAULT: '#000000', // Absolute Black
+                    card: '#121212',    // Vantablack HUD Card
+                    border: '#262626',  // Hard Grid Border
                 },
                 alert: {
                     DEFAULT: '#ff4d4d', // Alert Red
@@ -32,7 +32,18 @@ export default {
             },
             animation: {
                 'spin-slow': 'spin 3s linear infinite',
+                'scan': 'scan 2s linear infinite',
             },
+            fontFamily: {
+                mono: ['"JetBrains Mono"', '"IBM Plex Mono"', 'monospace'],
+                sans: ['Inter', 'sans-serif'],
+            },
+            keyframes: {
+                scan: {
+                    '0%': { backgroundPosition: '0% 0%' },
+                    '100%': { backgroundPosition: '100% 100%' },
+                }
+            }
         },
     },
     plugins: [],

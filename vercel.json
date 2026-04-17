@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd sentitrade-frontend && npm install",
+  "buildCommand": "cd sentitrade-frontend && npm run build",
+  "outputDirectory": "sentitrade-frontend/dist"
+}

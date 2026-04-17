@@ -10,6 +10,9 @@ interface LandingPageProps {
     onEnter: () => void;
 }
 
+// Mobile menu state lives outside
+let _mobileMenuOpen = false;
+
 // ============== ANIMATION VARIANTS ==============
 const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -22,7 +25,7 @@ const staggerContainer = {
 
 const revealText = {
     hidden: { y: "100%" },
-    visible: { y: "0%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }
+    visible: { y: "0%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] } }
 };
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
@@ -32,6 +35,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
     // Parallax & Scroll effects
     const heroTextY = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
     const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
+    const [mobileMenu, setMobileMenu] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -72,17 +77,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
                         ))}
                     </nav>
 
-                    {/* CTA */}
-                    <button
-                        onClick={onEnter}
-                        className={`px-6 py-2.5 font-bold uppercase tracking-wider text-sm border transition-all hover:scale-105 ${scrolled
-                                ? 'bg-[#DFFF00] text-black border-[#DFFF00]'
-                                : 'bg-black text-[#DFFF00] border-black'
+                    {/* CTA + Mobile Menu Toggle */}
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={onEnter}
+                            className={`hidden md:block px-6 py-2.5 font-bold uppercase tracking-wider text-sm border transition-all hover:scale-105 ${
+                                scrolled
+                                    ? 'bg-[#DFFF00] text-black border-[#DFFF00]'
+                                    : 'bg-black text-[#DFFF00] border-black'
                             }`}
-                    >
-                        Launch App
-                    </button>
+                        >
+                            Launch App
+                        </button>
+                        <button
+                            onClick={() => setMobileMenu(!mobileMenu)}
+                            className={`md:hidden p-2 ${scrolled ? 'text-white' : 'text-black'}`}
+                        >
+                            {mobileMenu ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
                 </div>
+
+                {/* Mobile Nav Dropdown */}
+                {mobileMenu && (
+                    <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-[#333] px-6 py-4 space-y-3">
+                        {['Product', 'Intelligence', 'Pricing', 'Docs'].map((item) => (
+                            <a key={item} href="#" className="block text-sm font-bold uppercase tracking-widest text-white hover:text-[#DFFF00] transition-colors py-2">
+                                {item}
+                            </a>
+                        ))}
+                        <button onClick={onEnter} className="w-full mt-2 px-6 py-3 bg-[#DFFF00] text-black font-bold uppercase tracking-wider text-sm">
+                            Launch App
+                        </button>
+                    </div>
+                )}
             </header>
 
             {/* ============ HERO SECTION (The Hook) ============ */}
@@ -100,7 +128,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
                         <div className="overflow-hidden">
                             <motion.h1
                                 variants={revealText}
-                                className="text-[12vw] leading-[0.85] font-black text-black tracking-tighter font-['Poppins']"
+                                className="text-[clamp(3rem,10vw,12vw)] leading-[0.85] font-black text-black tracking-tighter font-['Poppins']"
                             >
                                 TRADE WITH
                             </motion.h1>
@@ -108,7 +136,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
                         <div className="overflow-hidden">
                             <motion.h1
                                 variants={revealText}
-                                className="text-[12vw] leading-[0.85] font-black text-black tracking-tighter font-['Poppins']"
+                                className="text-[clamp(3rem,10vw,12vw)] leading-[0.85] font-black text-black tracking-tighter font-['Poppins']"
                             >
                                 SIGHT.
                             </motion.h1>
